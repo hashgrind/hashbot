@@ -1,0 +1,100 @@
+(function () {
+	'use strict';
+	
+	var
+		crypto = require('crypto'),
+		request = require('request'),
+		_ = require('lodash');
+	
+	function MsgHandler() {}
+	
+	/**
+	* Abstract away the determination of whether or not we have a command available.
+	*/
+	MsgHandler.prototype.hasCommand = function (cmd) {
+		return this._knownCommands.hasOwnProperty(cmd);
+	};
+	
+	/**
+	* Known bot commands, which is an object mapping commands to input and output functions,
+	* along with descriptor functions, which will be called asynchronously.
+	* It's sort of a poor man's map-reduce.
+	*/
+	MsgHandler.prototype._knownCommands = {
+		'!btc': {
+			'in': function (input, cb) {
+				request('https://blockchain.info/ticker', function (error, response, body) {
+					if (!error && response.statusCode === 200) {
+						var obj = JSON.parse(body);
+				
+						var price = obj.USD.last;
+				
+						cb(price);
+					}
+				});
+			},
+			'out': function (price) {
+				return 'Current Bitcoin market price is $' + price;
+			}
+		},
+		'!sha1': {
+			'in': function (input, cb) {
+				var hash = crypto.createHash('sha1');
+				
+				if (input.length >= 2) {
+					hash.update(input[1]);
+				} else {
+					hash.update('');
+				}
+				
+				cb(hash.digest('hex'));
+			},
+			'out': function (hash) {
+				return hash;
+			}
+		},
+		'!encode': {
+			'in': function (input, cb) {
+				if (input.length >= 4) {
+					// cmd, data, from, to
+					
+					cb(new Buffer(input[1], input[2]).toString(input[3]));
+				}
+			},
+			'out': function (val) {
+				return val;
+			}
+		}
+	};
+	
+	/**
+	* Internal implementation of parseMessage that does the bulk lifting.
+	*/
+	MsgHandler.prototype._parseMessage = function (arr, cb) {
+		if (_.isArray(arr) && arr.length >= 1) {
+			if (this.hasCommand(arr[0])) {
+				var cmdHash = this._knownCommands[arr[0]];
+				
+				cmdHash.in(arr, function (outValue) {
+					cb(cmdHash.out(outValue));
+				});
+			}
+		}
+	};
+	
+	/**
+	* Parse an input message, arg, and deliver the result to callback cb.
+	* arg may be either a string (which will be chopped into an array at whitespace)
+	* or an array already.
+	* cb will be called with a single argument, a string.
+	*/
+	MsgHandler.prototype.parseMessage = function (arg, cb) {
+		if (_.isString(arg)) {
+			this._parseMessage(arg.split(/\s+/), cb);
+		} else if (_.isArray(arg)) {
+			this._parseMessage(arg, cb);
+		}
+	};
+	
+	module.exports = MsgHandler;
+}).call();

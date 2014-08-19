@@ -1,0 +1,29 @@
+{
+  "name": "hashbot",
+  "version": "0.0.0",
+  "description": "Let there be bots",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/hashgrind/hashbot"
+  },
+  "keywords": [
+    "irc",
+    "bot"
+  ],
+  "author": "hashgrind",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hashgrind/hashbot/issues"
+  },
+  "homepage": "https://github.com/hashgrind/hashbot",
+  "dependencies": {
+    "irc": "^0.3.7",
+    "lodash": "^2.4.1",
+    "request": "^2.40.0",
+    "sleep": "^1.1.8"
+  }
+}
