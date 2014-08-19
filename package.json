@@ -23,7 +23,6 @@
   "dependencies": {
     "irc": "^0.3.7",
     "lodash": "^2.4.1",
-    "request": "^2.40.0",
-    "sleep": "^1.1.8"
+    "request": "^2.40.0"
   }
 }
