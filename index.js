@@ -10,9 +10,7 @@
 		channel = '##hashBotTest',
 		username = 'hash-bot';
 	
-	var
-		sleep = require('sleep'),
-		irc = require('irc');
+	var irc = require('irc');
 	
 	var client = new irc.Client(server, username, {
 		userName: username,
