@@ -12,7 +12,7 @@ If you message it privately, it will respond privately. Otherwise, it will respo
 
 `!encode input inFmt outFmt` will use node Buffers to reencode `input` from `inFmt` to `outFmt` (see http://nodejs.org/api/buffer.html#buffer_buffer).
 
-`!reddit [reddit]` will fetch a random link from `r/*reddit*`, or will use `random` as `reddit` if omitted.
+`!reddit [reddit]` will fetch a random link from the subreddit named `reddit`, or will use `random` as `reddit` if omitted.
 
 # License
 
