@@ -4,6 +4,16 @@ This silly IRC bot knows just a few tricks.
 
 If you message it privately, it will respond privately. Otherwise, it will respond on the channel in which you find it.
 
+## Usage
+
+After you `npm install`, just
+
+```
+$ node index.js --server irc.example.com --port 6697 --username whateverbot --channels '#chan1 #chan2'
+```
+
+e.g.
+
 ## Commands
 
 `!btc` gives you the current market price for Bitcoin, according to Blockchain.info.
