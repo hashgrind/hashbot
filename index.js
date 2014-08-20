@@ -5,9 +5,9 @@
 		server = 'chat.freenode.net',
 		port = 6697,
 		connectRetries = 1,
-		//channel = '#socialgeeks',
+		channel = '#socialgeeks',
 		//channel = '#dc614',
-		channel = '##hashBotTest',
+		//channel = '##hashBotTest',
 		username = 'hash-bot';
 	
 	var irc = require('irc');
