@@ -10,9 +10,14 @@
 	
 	/**
 	* Abstract away the determination of whether or not we have a command available.
+	* We'll keep the convention of lowercase command names, so lower the command as a convenience.
 	*/
 	MsgHandler.prototype.hasCommand = function (cmd) {
-		return this._knownCommands.hasOwnProperty(cmd);
+		return this._knownCommands.hasOwnProperty(cmd.toLowerCase());
+	};
+	
+	MsgHandler.prototype.getCommand = function (cmd) {
+		return this._knownCommands[cmd.toLowerCase()];
 	};
 	
 	/**
@@ -64,6 +69,22 @@
 			'out': function (val) {
 				return val;
 			}
+		},
+		'!reddit': {
+			'in': function (input, cb) {
+				var reddit = (input.length >= 2) ? input[1] : 'random';
+				
+				request(['http://reddit.com/r', reddit, '.json'].join('/'), function (error, response, body) {
+					if (!error && response.statusCode === 200) {
+						var obj = JSON.parse(body);
+						
+						cb(_(obj.data.children).shuffle().first());
+					}
+				});
+			},
+			'out': function (child) {
+				return ['https://reddit.com', child.data.permalink].join('');
+			}
 		}
 	};
 	
@@ -73,7 +94,7 @@
 	MsgHandler.prototype._parseMessage = function (arr, cb) {
 		if (_.isArray(arr) && arr.length >= 1) {
 			if (this.hasCommand(arr[0])) {
-				var cmdHash = this._knownCommands[arr[0]];
+				var cmdHash = this.getCommand(arr[0]);
 				
 				cmdHash.in(arr, function (outValue) {
 					cb(cmdHash.out(outValue));
