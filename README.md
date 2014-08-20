@@ -24,6 +24,8 @@ e.g.
 
 `!reddit [reddit]` will fetch a random link from the subreddit named `reddit`, or will use `random` as `reddit` if omitted.
 
+`!lfa arg1 [arg2 [arg3 [... argn]]]` performs a letter frequency analysis on the characters of all the arguments.
+
 # License
 
 MIT

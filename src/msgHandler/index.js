@@ -85,6 +85,28 @@
 			'out': function (child) {
 				return ['https://reddit.com', child.data.permalink].join('');
 			}
+		},
+		'!lfa': {
+			'in': function (input, cb) {
+				var hash = {};
+
+				_(input)
+					.rest()
+					.forEach(function (val) {
+						_(val.split('')).forEach(function (char) {
+							if (hash.hasOwnProperty(char)) {
+								hash[char]++;
+							} else {
+								hash[char] = 1;
+							}
+						});
+					});
+
+				cb(hash);
+			},
+			'out': function (hash) {
+				return JSON.stringify(hash);
+			}
 		}
 	};
 	
