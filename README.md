@@ -22,11 +22,11 @@ e.g.
 
 `!sha1 val` will give you the SHA1 hash value of `val`, in hex.
 
-`!encode input inFmt outFmt` will use node Buffers to reencode `input` from `inFmt` to `outFmt` (see http://nodejs.org/api/buffer.html#buffer_buffer).
+`!encode inFmt outFmt arg1 [arg2 [... argn]]` will use node Buffers to reencode each argument from `inFmt` to `outFmt` (see http://nodejs.org/api/buffer.html#buffer_buffer).
 
 `!reddit [reddit]` will fetch a random link from the subreddit named `reddit`, or will use `random` as `reddit` if omitted.
 
-`!lfa arg1 [arg2 [arg3 [... argn]]]` performs a letter frequency analysis on the characters of all the arguments.
+`!lfa arg1 [arg2 [... argn]]` performs a letter frequency analysis on the characters of all the arguments.
 
 `!rot shift arg1 [arg2 [... argn]]` performs a rotational cipher of order `shift` to each argument, leaving non-letter values untouched.
 

@@ -80,9 +80,16 @@
 		'!encode': {
 			'in': function (input, cb) {
 				if (input.length >= 4) {
-					// cmd, data, from, to
+					// cmd, from, to, data
+
+					var inFormat = input[1], outFormat = input[2];
+					var outputs = [];
+
+					_(input).rest(3).forEach(function (arg) {
+						outputs.push(new Buffer(arg, inFormat).toString(outFormat));
+					});
 					
-					cb(new Buffer(input[1], input[2]).toString(input[3]));
+					cb(outputs.join(' '));
 				}
 			},
 			'out': function (val) {
