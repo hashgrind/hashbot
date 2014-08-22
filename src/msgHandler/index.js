@@ -135,6 +135,70 @@
 			'help': function () {
 				return "`!lfa val1 [val2 [val3 [... valn]]]': Perform a letter frequency analysis on the vals";
 			}
+		},
+		'!rot': {
+			'in': function (input, cb) {
+				if (input.length >= 3) {
+					// Just avoiding magic numbers
+					var alphabetLength = 26;
+
+					var asciiConsts = {};
+					_(['A', 'Z', 'a', 'z']).forEach(function (chr) {
+						asciiConsts[chr] = chr.charCodeAt(0);
+					});
+
+					// Get the shift value
+					var shift = _.parseInt(input[1]);
+					while (shift < 0) {
+						shift += alphabetLength;
+					}
+
+					// Get the inputs to transform (recall args 0 and 1 are command and shift value)
+					var charArrays = [];
+					_(input).rest(2).forEach(function (word) {
+						charArrays.push(word.split(''));
+					});
+
+					// Written for high readability more than speed
+					_(charArrays).forEach(function (charArr) {
+						for (var i = 0; i < charArr.length; i++) {
+							charArr[i] = charArr[i].charCodeAt(0);
+
+							var shiftFloor = null;
+							if (charArr[i] >= asciiConsts.A && charArr[i] <= asciiConsts.Z) {
+								shiftFloor = asciiConsts.A;
+							} else if (charArr[i] >= asciiConsts.a && charArr[i] <= asciiConsts.z) {
+								shiftFloor = asciiConsts.a;
+							}
+
+							if (!_.isNull(shiftFloor)) {
+								charArr[i] += shift - shiftFloor;
+								charArr[i] %= alphabetLength;
+								charArr[i] += shiftFloor;
+							}
+						}
+					});
+
+					cb(charArrays);
+				}
+			},
+			'out': function (codeArrays) {
+				codeArrays = _(codeArrays)
+					.map(function (codeArray) {
+						codeArray = _(codeArray)
+							.map(function (code) {
+								return String.fromCharCode(code);
+							})
+							.valueOf();
+
+						return codeArray.join('');
+					})
+					.valueOf();
+				return codeArrays.join(' ');
+			},
+			'help': function () {
+				return "`!rot shift arg1 [arg2 [... argn]]: Perform an affine transformation (aka rotational cipher (aka Caesar cipher)) on the argi's'";
+			}
 		}
 	};
 	
