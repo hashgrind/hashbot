@@ -26,6 +26,19 @@
 	* It's sort of a poor man's map-reduce.
 	*/
 	MsgHandler.prototype._knownCommands = {
+		'!help': {
+			'in': function (input, cb) {
+				_(this._knownCommands).forEach(function (cmd) {
+					cb(cmd.help());
+				});
+			},
+			'out': function (val) {
+				return val;
+			},
+			'help': function () {
+				return "`!help': You're reading it";
+			}
+		},
 		'!btc': {
 			'in': function (input, cb) {
 				request('https://blockchain.info/ticker', function (error, response, body) {
@@ -40,6 +53,9 @@
 			},
 			'out': function (price) {
 				return 'Current Bitcoin market price is $' + price;
+			},
+			'help': function () {
+				return "`!btc': Fetch the current market price of Bitcoin from Blockchain.info";
 			}
 		},
 		'!sha1': {
@@ -56,6 +72,9 @@
 			},
 			'out': function (hash) {
 				return hash;
+			},
+			'help': function () {
+				return "`!sha1 val': Hash val with SHA1";
 			}
 		},
 		'!encode': {
@@ -68,6 +87,9 @@
 			},
 			'out': function (val) {
 				return val;
+			},
+			'help': function () {
+				return "`!encode val inFmt outFmt': Reencode val from inFmt to outFmt (e.g., utf8, ascii, base64, hex)";
 			}
 		},
 		'!reddit': {
@@ -84,6 +106,9 @@
 			},
 			'out': function (child) {
 				return ['https://reddit.com', child.data.permalink].join('');
+			},
+			'help': function () {
+				return "`!reddit [val]': Fetch a random link from the r/val reddit, defaulting to random";
 			}
 		},
 		'!lfa': {
@@ -106,6 +131,9 @@
 			},
 			'out': function (hash) {
 				return JSON.stringify(hash);
+			},
+			'help': function () {
+				return "`!lfa val1 [val2 [val3 [... valn]]]': Perform a letter frequency analysis on the vals";
 			}
 		}
 	};
@@ -118,7 +146,7 @@
 			if (this.hasCommand(arr[0])) {
 				var cmdHash = this.getCommand(arr[0]);
 				
-				cmdHash.in(arr, function (outValue) {
+				cmdHash.in.call(this, arr, function (outValue) {
 					cb(cmdHash.out(outValue));
 				});
 			}
