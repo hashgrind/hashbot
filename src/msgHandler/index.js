@@ -28,7 +28,7 @@
 	MsgHandler.prototype._knownCommands = {
 		'!help': {
 			'in': function (input, cb) {
-				_(this._knownCommands).forEach(function (cmd) {
+				_(this._knownCommands).where('help').forEach(function (cmd) {
 					cb(cmd.help());
 				});
 			},
