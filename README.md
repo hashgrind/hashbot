@@ -16,6 +16,8 @@ e.g.
 
 ## Commands
 
+`!help' gives you help.
+
 `!btc` gives you the current market price for Bitcoin, according to Blockchain.info.
 
 `!sha1 val` will give you the SHA1 hash value of `val`, in hex.
@@ -25,6 +27,8 @@ e.g.
 `!reddit [reddit]` will fetch a random link from the subreddit named `reddit`, or will use `random` as `reddit` if omitted.
 
 `!lfa arg1 [arg2 [arg3 [... argn]]]` performs a letter frequency analysis on the characters of all the arguments.
+
+`!rot shift arg1 [arg2 [... argn]]` performs a rotational cipher of order `shift` to each `argn` in such a way that ignores non-letter values.
 
 # License
 
