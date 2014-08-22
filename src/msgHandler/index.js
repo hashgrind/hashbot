@@ -145,10 +145,14 @@
 		if (_.isArray(arr) && arr.length >= 1) {
 			if (this.hasCommand(arr[0])) {
 				var cmdHash = this.getCommand(arr[0]);
-				
-				cmdHash.in.call(this, arr, function (outValue) {
-					cb(cmdHash.out(outValue));
-				});
+
+				try {
+					cmdHash.in.call(this, arr, function (outValue) {
+						cb(cmdHash.out(outValue));
+					});
+				} catch (ex) {
+					cb("Something went wrong. I.e., you fucked it up.");
+				}
 			}
 		}
 	};

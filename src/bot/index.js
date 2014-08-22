@@ -29,6 +29,10 @@
 				}
 			});
 		});
+
+		config.client.addListener('error', function (message) {
+			config.client.say("Something went wrong. I.e., you fucked it up.");
+		});
 	}
 		
 	module.exports = Bot;
