@@ -28,7 +28,7 @@ e.g.
 
 `!lfa arg1 [arg2 [arg3 [... argn]]]` performs a letter frequency analysis on the characters of all the arguments.
 
-`!rot shift arg1 [arg2 [... argn]]` performs a rotational cipher of order `shift` to each `argn` in such a way that ignores non-letter values.
+`!rot shift arg1 [arg2 [... argn]]` performs a rotational cipher of order `shift` to each argument, leaving non-letter values untouched.
 
 # License
 
