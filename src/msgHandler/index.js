@@ -96,7 +96,7 @@
 				return val;
 			},
 			'help': function () {
-				return "`!encode val inFmt outFmt': Reencode val from inFmt to outFmt (e.g., utf8, ascii, base64, hex)";
+				return "`!encode inFmt outFmt arg1 [arg2 [... argn]]': Reencode each arg from inFmt to outFmt (e.g., utf8, ascii, base64, hex, etc. -- see http://nodejs.org/api/buffer.html#buffer_buffer)";
 			}
 		},
 		'!reddit': {
