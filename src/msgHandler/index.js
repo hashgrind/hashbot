@@ -28,15 +28,21 @@
 	MsgHandler.prototype._knownCommands = {
 		'!help': {
 			'in': function (input, cb) {
-				_(this._knownCommands).where('help').forEach(function (cmd) {
-					cb(cmd.help());
-				});
+				if (input.length == 1) {
+					_(this._knownCommands).where('help').forEach(function (cmd) {
+						cb(cmd.help());
+					});
+				} else if (input.length > 1) {
+					if (this.hasCommand(input[1])) {
+						cb(this._knownCommands[input[1]].help());
+					}
+				}
 			},
 			'out': function (val) {
 				return val;
 			},
 			'help': function () {
-				return "`!help': You're reading it";
+				return "`!help [!cmd]': You're reading it; or, help about !cmd";
 			}
 		},
 		'!btc': {

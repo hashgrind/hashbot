@@ -1,6 +1,6 @@
 {
   "name": "hashbot",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Let there be bots",
   "main": "index.js",
   "scripts": {

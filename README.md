@@ -16,7 +16,7 @@ e.g.
 
 ## Commands
 
-`!help` gives you help.
+`!help [!cmd]` gives you help, optionally about the command `!cmd'.
 
 `!btc` gives you the current market price for Bitcoin, according to Blockchain.info.
 
