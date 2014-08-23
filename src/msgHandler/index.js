@@ -106,13 +106,17 @@
 				request(['http://reddit.com/r', reddit, '.json'].join('/'), function (error, response, body) {
 					if (!error && response.statusCode === 200) {
 						var obj = JSON.parse(body);
-						
-						cb(_(obj.data.children).shuffle().first());
+
+						var child = _(obj.data.children).shuffle().first();
+
+						cb(['https://reddit.com', child.data.permalink].join(''));
+					} else {
+						cb("Reddit doesn't like you. Neither does hashbot.");
 					}
 				});
 			},
-			'out': function (child) {
-				return ['https://reddit.com', child.data.permalink].join('');
+			'out': function (val) {
+				return val;
 			},
 			'help': function () {
 				return "`!reddit [val]': Fetch a random link from the r/val reddit, defaulting to random";
@@ -204,7 +208,7 @@
 				return codeArrays.join(' ');
 			},
 			'help': function () {
-				return "`!rot shift arg1 [arg2 [... argn]]: Perform an affine transformation (aka rotational cipher (aka Caesar cipher)) on the argi's'";
+				return "`!rot shift arg1 [arg2 [... argn]]': Perform an affine transformation (aka rotational cipher (aka Caesar cipher)) on the argi's";
 			}
 		}
 	};
