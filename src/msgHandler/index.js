@@ -113,9 +113,13 @@
 					if (!error && response.statusCode === 200) {
 						var obj = JSON.parse(body);
 
-						var child = _(obj.data.children).shuffle().first();
+						if (_.isObject(obj) && _.isObject(obj.data) && _.isArray(obj.data.children) && obj.data.children.length > 0) {
+							var child = _(obj.data.children).shuffle().first();
 
-						cb(['https://reddit.com', child.data.permalink].join(''));
+							cb(['https://reddit.com', child.data.permalink].join(''));
+						} else {
+							cb("Reddit doesn't like you. Neither does hashbot.");
+						}
 					} else {
 						cb("Reddit doesn't like you. Neither does hashbot.");
 					}
