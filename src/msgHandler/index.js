@@ -234,7 +234,7 @@
 					if (_.isArray(nextTokens) && nextTokens.length > 0) {
 						tokenProjection = tokenProjection.concat(nextTokens);
 
-						lastToken = nextTokens[0];
+						lastToken = nextTokens[nextTokens.length - 1];
 					} else {
 						break;
 					}
