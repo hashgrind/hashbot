@@ -220,6 +220,34 @@
 			'help': function () {
 				return "`!rot shift arg1 [arg2 [... argn]]': Perform an affine transformation (aka rotational cipher (aka Caesar cipher)) on the argi's";
 			}
+		},
+		'!markov': {
+			'in': function (input, cb) {
+				var tokenProjection = [];
+
+				var lastToken = _(this._markovProps.learnedProjection).keys().shuffle().first();
+				tokenProjection.push(lastToken);
+
+				for (var i = 0; i < this._markovProps.generateTokens - 1; i++) {
+					var nextTokens = _(this._markovProps.learnedProjection[lastToken]).shuffle().first();
+
+					if (_.isArray(nextTokens) && nextTokens.length > 0) {
+						tokenProjection = tokenProjection.concat(nextTokens);
+
+						lastToken = nextTokens[0];
+					} else {
+						break;
+					}
+				}
+
+				cb(tokenProjection);
+			},
+			'out': function (val) {
+				return val.join(' ');
+			},
+			'help': function () {
+				return "`!markov': Generate Markov values learned by listening to others talk";
+			}
 		}
 	};
 	
@@ -238,6 +266,8 @@
 				} catch (ex) {
 					cb("Something went wrong. I.e., you fucked it up.");
 				}
+			} else {
+				this.learnMarkov(arr);
 			}
 		}
 	};
@@ -253,6 +283,33 @@
 			this._parseMessage(arg.split(/\s+/), cb);
 		} else if (_.isArray(arg)) {
 			this._parseMessage(arg, cb);
+		}
+	};
+
+	/**
+	 * Properties for Markov-ish learning.
+	 */
+	MsgHandler.prototype._markovProps = {
+		windowSize: 1,      // Projection to a window of this size
+		generateTokens: 25, // Number of tokens maximally to generate
+		learnedProjection: {}       // Projection map of learned values n -> K where K is an array of size windowSize
+	};
+
+	/**
+	 * Learn a text array for Markov generation.
+	 */
+	MsgHandler.prototype.learnMarkov = function (arr) {
+		if (_.isArray(arr) && arr.length > 1) {
+			for (var tokenCount = 0; tokenCount < arr.length - this._markovProps.windowSize; tokenCount ++) {
+				var prefix = arr[tokenCount];
+				var slice = arr.slice(tokenCount + 1, tokenCount + this._markovProps.windowSize + 1);
+
+				if (this._markovProps.learnedProjection.hasOwnProperty(prefix)) {
+					this._markovProps.learnedProjection[prefix].push(slice);
+				} else {
+					this._markovProps.learnedProjection[prefix] = [slice];
+				}
+			}
 		}
 	};
 	
